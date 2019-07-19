@@ -1,0 +1,29 @@
+					git clone 下载速度慢
+
+
+git 加速方法如下
+1、查找域名对应的IP地址，并修改hotos文件
+	nslookup github.global.ssl.fastly.Net 	命令
+		Name: github.global.ssl.fastly.Net
+		Address: 151.101.229.194
+	nslookup github.com			命令
+		Name: github.com
+		Address: 13.229.188.59
+	修改hostos文件  sudo vim/etc/hostos
+		添加上面两个命令的结构添加到hostos文件末尾
+		例：github.com 13.229.188.59
+		    github.global.ssl.fastly.Net 151.101.229.194	
+
+2、刷新DNS缓存
+	sudo /etc/init.d/netwoking restart
+	
+
+
+
+
+
+
+	
+
+
+					   参考  https://www.linuxidc.com/Linux/2019-05/158461.htm
