@@ -13,7 +13,6 @@
     gpio_config(&io_conf);                          //IO口初始化
 
 
-a
 还有一些IO中断API
 
     /* 设置中断类型  */

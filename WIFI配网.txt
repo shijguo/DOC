@@ -1,6 +1,6 @@
 						WIFI配网操作流程
 
-static esp_err_t event_handler(void *ctx, system_event_t *event)			//回调事件
+static esp_err_t event_handler(void *ctx, system_event_t *event)		//回调事件
 {
     switch (event->event_id) {
     case SYSTEM_EVENT_STA_START:
@@ -13,11 +13,11 @@ static esp_err_t event_handler(void *ctx, system_event_t *event)			//回调事�
         tcpip_adapter_create_ip6_linklocal(TCPIP_ADAPTER_IF_STA);		//sta模式开始
 #endif
         break;
-    case SYSTEM_EVENT_STA_GOT_IP:										//从连接的AP获得IP
+    case SYSTEM_EVENT_STA_GOT_IP:						//从连接的AP获得IP
         xEventGroupSetBits(wifi_event_group, IPV4_GOTIP_BIT);
         ESP_LOGI(TAG, "SYSTEM_EVENT_STA_GOT_IP");
         break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:									//断开连接
+    case SYSTEM_EVENT_STA_DISCONNECTED:						//断开连接
         /* This is a workaround as ESP32 WiFi libs don't currently auto-reassociate. */
         esp_wifi_connect();
         xEventGroupClearBits(wifi_event_group, IPV4_GOTIP_BIT);
@@ -43,22 +43,22 @@ static esp_err_t event_handler(void *ctx, system_event_t *event)			//回调事�
 
 void initialise_wifi(void)
 {
-	tcpip_adapter_init();											//初始化tcp/ip适配器
-    wifi_event_group = xEventGroupCreate();							//创建事件组
-    ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );	//WIFI回调事件
+	tcpip_adapter_init();							//初始化tcp/ip适配器
+    wifi_event_group = xEventGroupCreate();					//创建事件组
+    ESP_ERROR_CHECK( esp_event_loop_init(event_handler, NULL) );		//WIFI回调事件
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();			//WIFI默认配置
-    ESP_ERROR_CHECK( esp_wifi_init(&cfg) );							//按WIFI默认配置初始化
-    ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );		//WIFI参数存储类型
+    ESP_ERROR_CHECK( esp_wifi_init(&cfg) );					//按WIFI默认配置初始化
+    ESP_ERROR_CHECK( esp_wifi_set_storage(WIFI_STORAGE_RAM) );			//WIFI参数存储类型
     wifi_config_t wifi_config = {	
         .sta = {
-            .ssid = EXAMPLE_WIFI_SSID,								//WIFI SSID
-            .password = EXAMPLE_WIFI_PASS,							//WIDI Password
+            .ssid = EXAMPLE_WIFI_SSID,						//WIFI SSID
+            .password = EXAMPLE_WIFI_PASS,					//WIDI Password
         },
     };
     ESP_LOGI(TAG, "Setting WiFi configuration SSID %s...", wifi_config.sta.ssid);
     ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_STA) );			//设置WIFI模式 sta/ap
-    ESP_ERROR_CHECK( esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );		//按以上配置设置
-    ESP_ERROR_CHECK( esp_wifi_start() );							//启动WIFI
+    ESP_ERROR_CHECK( esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );	//按以上配置设置
+    ESP_ERROR_CHECK( esp_wifi_start() );					//启动WIFI
 
 
 }
